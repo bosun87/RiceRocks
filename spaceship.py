@@ -247,7 +247,6 @@ class Sprite:
     def collide(self,other_object):
         a=other_object.get_position()
         b=other_object.get_radius()
-        
         c=dist(a,self.pos)-(b+self.radius)
         
         if c<0:
@@ -255,22 +254,13 @@ class Sprite:
             if dist(a,self.pos)<min(b,self.radius):
                 
                 return False
-            
             else:
                 
                 return True
-            
-            
-            
-            
-        
         else:
             
             return False
         
-        
-        
-  
         
 # key handlers to control ship   
 def keydown(key):
