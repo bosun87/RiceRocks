@@ -349,17 +349,6 @@ def draw(canvas):
         soundtrack.pause()
         
         reset()
-        
-    
-        
-        
-    
-        
-        
-        
-    
-   
-    
     
     num = group_group_collide(missile_group,rock_group)
         
