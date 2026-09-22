@@ -166,6 +166,59 @@ the smallest test set that preserves regression confidence.
 When credible risk remains unresolved, do not classify the test as SKIP.
 
 
+## Golden Case Retrieval Policy — JSON First
+
+Golden-case JSON descriptors are the PRIMARY source for retrieving
+historical test-case information.
+
+### Retrieval order
+
+1. Analyze the PR/code change and determine what golden-case information is needed.
+2. Query the existing JSON descriptors first.
+3. For cross-case search, filtering, counting, comparison, or value lookup,
+   prefer Python-based programmatic queries instead of opening JSON files one by one.
+4. Use raw golden-session data only when the JSON is missing, ambiguous,
+   inconsistent, suspicious, or insufficient for the classification decision.
+5. When raw data is needed, inspect only the minimum relevant portion.
+
+Do NOT:
+- recursively scan or grep the raw golden-session folder by default;
+- use raw golden data merely to reconfirm information already clearly available in JSON;
+- manually open large numbers of JSON files when a programmatic query can answer the question.
+
+JSON is the primary source, but it is not assumed to be perfectly complete or accurate.
+Classification-critical values such as counts, statuses, state changes, and error codes
+should be verified from raw golden data only when there is a specific reason to doubt
+or when the JSON does not provide a reliable answer.
+
+Whenever raw golden data is required because the JSON was insufficient or incorrect,
+append a short entry to:
+
+`references/json-improvement-log.jsonl`
+
+Record:
+- `case_id`
+- `field`
+- `issue_type` (`missing`, `incorrect`, `ambiguous`, `incomplete`, `new_query_need`)
+- `why_json_was_insufficient`
+- `suggested_json_improvement`
+
+Expected normal path:
+
+PR/code change
+→ Python query over JSON
+→ structured results
+→ regression classification
+
+Fallback path:
+
+PR/code change
+→ JSON insufficient
+→ targeted raw golden lookup
+→ classification
+→ JSON improvement log
+
+
 
 
 
